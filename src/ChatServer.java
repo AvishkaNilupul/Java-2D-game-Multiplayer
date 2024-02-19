@@ -11,17 +11,26 @@ public class ChatServer {
             Socket clientSocket1 = serverSocket.accept();
             System.out.println("First client connected.");
 
-            // Accept second client
-            Socket clientSocket2 = serverSocket.accept();
-            System.out.println("Second client connected.");
-
             // Create input/output streams for client 1
             BufferedReader reader1 = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
             PrintWriter writer1 = new PrintWriter(clientSocket1.getOutputStream(), true);
 
+            String response;
+            response = reader1.readLine();
+            System.out.println(response);
+
+
+
+
+            // Accept second client
+            Socket clientSocket2 = serverSocket.accept();
+            System.out.println("Second client connected.");
+
+
             // Create input/output streams for client 2
             BufferedReader reader2 = new BufferedReader(new InputStreamReader(clientSocket2.getInputStream()));
             PrintWriter writer2 = new PrintWriter(clientSocket2.getOutputStream(), true);
+
 
             // Start a thread for client 1 to listen for messages
             new Thread(() -> {

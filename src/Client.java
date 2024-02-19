@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends JFrame implements KeyListener {
+    private long lastKeyPressTime = 0;
+    private final long COOLDOWN_DURATION = 1000;
 
     private BufferedReader reader;
     private Socket socket;
@@ -18,6 +20,7 @@ public class Client extends JFrame implements KeyListener {
     Timer timer;
     int score = 0;
     JLabel textlabel;
+
 
     Client() {
 
@@ -107,6 +110,7 @@ public class Client extends JFrame implements KeyListener {
         }catch (Exception e){
             System.out.println(e);
         }
+
         this.setTitle("Player 1");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600, 500);
@@ -125,6 +129,7 @@ public class Client extends JFrame implements KeyListener {
                 }
             }
         });
+
 
         Player = new JLabel();
         Player.setBounds(0, 350, 50, 50);
@@ -172,6 +177,8 @@ public class Client extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        long currentTime = System.currentTimeMillis();
+
         if (e.getKeyChar() == 'w') {
             if (Player.getY() == 350) {
                 Player.setLocation(Player.getX(), Player.getY() - 100);
@@ -191,13 +198,15 @@ public class Client extends JFrame implements KeyListener {
                 Player.setLocation(Player.getX() - 10, 350);
 
             }
-        } else if (e.getKeyChar() == 'f') {
+        } else if (e.getKeyChar() == 'f' && currentTime - lastKeyPressTime >= COOLDOWN_DURATION) {
+            lastKeyPressTime = currentTime;
             JLabel newLabel3 = new JLabel();
             newLabel3.setBounds(Player.getX(), Player.getY(), 60, 50);
             newLabel3.setBackground(Color.green);
             newLabel3.setOpaque(true);
             this.add(newLabel3);
             label3List.add(newLabel3);
+            revalidate();
 
 
 
